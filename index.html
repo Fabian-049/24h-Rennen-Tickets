@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>24h Rennen – Ticket Check-in</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <div class="pass" id="login-card">
@@ -124,7 +124,7 @@
     // ── Firebase Realtime Database ──
     // Nach dem Einrichten (siehe Anleitung) hier die eigene Datenbank-URL eintragen,
     // z.B. "https://24h-rennen-default-rtdb.europe-west1.firebasedatabase.app"
-    const FIREBASE_DB_URL = "https://h-rennen-web-default-rtdb.europe-west1.firebasedatabase.app";
+    const FIREBASE_DB_URL = "HIER-DEINE-FIREBASE-URL-EINTRAGEN";
 
     const PASSWORD = "24hRennen";
 
@@ -157,7 +157,8 @@
     function listenForScan(id) {
       if (eventSource) eventSource.close();
       eventSource = new EventSource(FIREBASE_DB_URL + '/tickets/' + id + '.json');
-      eventSource.addEventListener('put', function (e) {
+
+      function handleUpdate(e) {
         try {
           const payload = JSON.parse(e.data);
           if (payload && payload.data && payload.data.scanned) {
@@ -166,7 +167,12 @@
             eventSource.close();
           }
         } catch (err) { /* ignoriere fehlerhafte Pakete */ }
-      });
+      }
+
+      // Firebase schickt bei PUT-Schreibvorgängen ein 'put'-Event,
+      // bei PATCH (wie in scan.html) ein 'patch'-Event – auf beide hören.
+      eventSource.addEventListener('put', handleUpdate);
+      eventSource.addEventListener('patch', handleUpdate);
     }
 
     form.addEventListener('submit', function (e) {
