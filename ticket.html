@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>24h Rennen – Ticket</title>
+<link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+  <div class="stub">
+    <div class="checker"></div>
+    <div class="stub-header">
+      <p class="eyebrow">Gültiges Ticket</p>
+      <h1 style="margin-bottom:0;">24h Rennen</h1>
+    </div>
+
+    <img class="stub-image" src="ticket.jpg" alt="Ticket-Motiv 24h Rennen">
+
+    <div style="padding: 18px 26px 0 26px;">
+      <div class="event-info">
+        <div class="event-info-item">
+          <span class="event-info-label">Datum</span>
+          <span class="event-info-value">14.–15.11.</span>
+        </div>
+        <div class="event-info-item">
+          <span class="event-info-label">Beginn</span>
+          <span class="event-info-value">ab 16 Uhr</span>
+        </div>
+        <div class="event-info-item">
+          <span class="event-info-label">Ort</span>
+          <span class="event-info-value">Garage</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="perforation" style="margin-top: 20px;"></div>
+
+    <div class="stub-footer">
+      <span class="stub-name" id="stub-name">Gast</span>
+      <span class="stub-tag">Zutritt frei</span>
+    </div>
+  </div>
+
+  <a class="back-link" href="index.html">Zurück zum Check-in</a>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const name = params.get('name');
+    if (name) {
+      document.getElementById('stub-name').textContent = name;
+    }
+  </script>
+</body>
+</html>

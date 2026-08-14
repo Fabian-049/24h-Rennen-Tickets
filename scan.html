@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>24h Rennen – Ticket-Check</title>
+<link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+  <div class="scan-card" id="scan-card">
+    <div class="checker"></div>
+    <div class="scan-body">
+      <div class="scan-icon" id="scan-icon">✓</div>
+      <h1 id="scan-title">Gültiges Ticket</h1>
+      <p class="scan-sub" id="scan-sub">Viel Spaß!</p>
+    </div>
+  </div>
+
+  <script>
+    const FIREBASE_DB_URL = https://h-rennen-web-default-rtdb.europe-west1.firebasedatabase.app;
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const scanIcon = document.getElementById('scan-icon');
+    const scanTitle = document.getElementById('scan-title');
+    const scanSub = document.getElementById('scan-sub');
+    const scanCard = document.getElementById('scan-card');
+
+    if (!id) {
+      scanIcon.textContent = '!';
+      scanTitle.textContent = 'Kein Ticket erkannt';
+      scanSub.textContent = 'Dieser Link enthält keine Ticket-ID.';
+      scanCard.classList.add('invalid');
+    } else {
+      fetch(FIREBASE_DB_URL + '/tickets/' + id + '.json', {
+        method: 'PATCH',
+        body: JSON.stringify({ scanned: true, scannedAt: Date.now() })
+      })
+      .then(res => res.json())
+      .catch(() => {
+        scanIcon.textContent = '!';
+        scanTitle.textContent = 'Verbindung fehlgeschlagen';
+        scanSub.textContent = 'Bitte erneut versuchen.';
+        scanCard.classList.add('invalid');
+      });
+    }
+  </script>
+</body>
+</html>

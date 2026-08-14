@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --asphalt: #14161a;
+  --asphalt-2: #1e2128;
+  --card: #1c1f26;
+  --floodlight: #f4b942;
+  --floodlight-soft: rgba(244, 185, 66, 0.18);
+  --trackwhite: #eef1f5;
+  --muted: #8b909c;
+  --stripe-green: #2f9e63;
+  --danger: #e0554f;
+  --radius: 14px;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background: var(--asphalt);
+  color: var(--trackwhite);
+  font-family: 'Inter', sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+  background-image:
+    radial-gradient(circle at 20% -10%, rgba(244,185,66,0.08), transparent 45%),
+    radial-gradient(circle at 100% 110%, rgba(47,158,99,0.06), transparent 45%);
+}
+
+:focus-visible{
+  outline: 2px solid var(--floodlight);
+  outline-offset: 3px;
+}
+
+.checker{
+  height: 10px;
+  width: 100%;
+  background-image: conic-gradient(var(--asphalt-2) 90deg, transparent 90deg 180deg, var(--asphalt-2) 180deg 270deg, transparent 270deg);
+  background-size: 10px 10px;
+  opacity: 0.6;
+}
+
+.eyebrow{
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--floodlight);
+  margin: 0 0 6px 0;
+}
+
+h1{
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 6vw, 38px);
+  letter-spacing: 0.01em;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+}
+
+p.sub{
+  color: var(--muted);
+  margin: 0 0 28px 0;
+  font-size: 14px;
+}
+
+/* ---- Check-in card (index.html) ---- */
+.pass{
+  width: 100%;
+  max-width: 380px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.pass-body{
+  padding: 32px 28px 28px 28px;
+}
+
+label{
+  display:block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 18px 0 8px 0;
+}
+
+label:first-of-type{ margin-top: 0; }
+
+input{
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--asphalt);
+  color: var(--trackwhite);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+}
+
+input::placeholder{ color: #565b66; }
+
+button{
+  width: 100%;
+  margin-top: 26px;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--floodlight);
+  color: #1a1300;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+button:hover{ box-shadow: 0 0 0 4px var(--floodlight-soft); }
+button:active{ transform: translateY(1px); }
+
+.error{
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--danger);
+  display:none;
+}
+
+.error.show{ display:block; }
+
+@keyframes shake{
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+.shake{ animation: shake 0.4s; }
+
+/* ---- QR reveal state ---- */
+.qr-wrap{
+  display:none;
+  text-align:center;
+  margin-top: 24px;
+}
+.qr-wrap.show{ display:block; }
+
+.qr-glow{
+  display:inline-block;
+  padding: 16px;
+  background: var(--trackwhite);
+  border-radius: 10px;
+  box-shadow: 0 0 0 0 var(--floodlight-soft);
+  animation: floodlight 1.8s ease-out 1;
+}
+
+@keyframes floodlight{
+  0% { box-shadow: 0 0 0 0 rgba(244,185,66,0.5); }
+  60% { box-shadow: 0 0 0 26px rgba(244,185,66,0); }
+  100% { box-shadow: 0 0 0 0 rgba(244,185,66,0); }
+}
+
+.qr-glow img{ display:block; width: 220px; height: 220px; }
+
+.qr-caption{
+  margin-top: 14px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.qr-caption strong{ color: var(--trackwhite); }
+
+/* ---- Event-Info (Ort, Datum, Uhrzeit) ---- */
+.event-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: var(--asphalt);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  text-align: left;
+}
+
+.event-info-item{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.event-info-label{
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.event-info-value{
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--trackwhite);
+  text-align: right;
+}
+
+/* ---- Ticket page ---- */
+.stub{
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.stub-header{
+  padding: 22px 26px 16px 26px;
+}
+
+.stub-image{
+  width: 100%;
+  display:block;
+  height: auto;
+  object-fit: contain;
+  background: var(--asphalt-2);
+}
+
+.perforation{
+  position: relative;
+  height: 0;
+  border-top: 2px dashed rgba(255,255,255,0.15);
+  margin: 0 26px;
+}
+.perforation::before, .perforation::after{
+  content:"";
+  position:absolute;
+  top:-11px;
+  width:22px;
+  height:22px;
+  background: var(--asphalt);
+  border-radius:50%;
+}
+.perforation::before{ left:-37px; }
+.perforation::after{ right:-37px; }
+
+.stub-footer{
+  padding: 18px 26px 26px 26px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.stub-name{
+  font-family:'Oswald', sans-serif;
+  font-weight:600;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.stub-tag{
+  font-family:'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stripe-green);
+  border: 1px solid var(--stripe-green);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.back-link{
+  display:block;
+  text-align:center;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+.back-link:hover{ color: var(--floodlight); }
+
+/* ---- QR-Sektion unter dem Ticket (index.html) ---- */
+.qr-section{
+  padding: 20px 26px 26px 26px;
+  text-align: center;
+  border-top: 1px dashed rgba(255,255,255,0.1);
+}
+
+.qr-status{
+  margin-top: 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- Vollbild-Einblendung für den VIP-Pass ---- */
+.vip-overlay{
+  display:none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8,9,11,0.92);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.vip-overlay.show{
+  display:flex;
+}
+
+.vip-overlay-inner{
+  width: 100%;
+  max-width: 360px;
+}
+
+.vip-overlay-inner svg{
+  width: 100%;
+  height: auto;
+  display:block;
+}
+
+/* ---- Scan-Bestätigungsseite (scan.html) ---- */
+.scan-card{
+  width: 100%;
+  max-width: 360px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.scan-body{
+  padding: 48px 28px;
+  text-align: center;
+}
+
+.scan-icon{
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px auto;
+  border-radius: 50%;
+  background: rgba(47,158,99,0.15);
+  color: var(--stripe-green);
+  border: 2px solid var(--stripe-green);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.scan-card.invalid .scan-icon{
+  background: rgba(224,85,79,0.15);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.scan-sub{
+  color: var(--muted);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 6px 0 0 0;
+}
